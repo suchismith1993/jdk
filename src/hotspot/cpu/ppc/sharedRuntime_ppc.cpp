@@ -24,6 +24,7 @@
  */
 
 #include "precompiled.hpp"
+#include "asm/assembler.inline.hpp"
 #include "asm/macroAssembler.inline.hpp"
 #include "code/debugInfoRec.hpp"
 #include "code/compiledIC.hpp"
@@ -1371,6 +1372,27 @@ static void float_move(MacroAssembler*masm,
       __ fmr(dst.first()->as_FloatRegister(), src.first()->as_FloatRegister());
   }
 }
+// static void use_non_branch_code(MacroAssembler* masm,Register temp,Register r_return)
+// {
+    
+//     if (VM_Version::has_brw()) {
+//       __ li(R0,1);
+//       __ cmpdi(CCR0,r_return,0);
+//       __ setbcr(r_return,CCR0,Assembler::zero);
+//       __ cmpdi(CCR0,R0,0);
+//       __ setbcr(R0,CCR0,Assembler::zero);
+      
+//       if(UseNewCode)
+//         __ untested("setbcr works");
+      
+//     }
+//     else {
+//       __ neg(temp, r_return);
+//       __ orr(temp, r_return, temp);
+//       __ srwi(r_return, temp, 31);
+      
+//     }
+// }
 
 static void double_move(MacroAssembler*masm,
                         VMRegPair src, VMRegPair dst,
@@ -2472,11 +2494,7 @@ nmethod *SharedRuntime::generate_native_wrapper(MacroAssembler *masm,
     case T_ARRAY:   break;
 
     case T_BOOLEAN: {             // 0 -> false(0); !0 -> true(1)
-      Label skip_modify;
-      __ cmpwi(CCR0, R3_RET, 0);
-      __ beq(CCR0, skip_modify);
-      __ li(R3_RET, 1);
-      __ bind(skip_modify);
+      __ normalize_bool(R3_RET, R0, false);
       break;
       }
     case T_BYTE: {                // sign extension
