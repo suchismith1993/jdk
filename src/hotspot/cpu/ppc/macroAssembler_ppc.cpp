@@ -84,8 +84,7 @@ void MacroAssembler::normalize_bool(Register dst, Register temp, bool use_64bit)
       neg(temp, dst);
       orr(temp, dst, temp);
       srwi(dst, temp, 31);
-      if(UseNewCode)
-        untested("setbcr works");
+      
     }
 }
 void MacroAssembler::ld_largeoffset(Register d, int si31, Register a, int emit_filler_nop) {
