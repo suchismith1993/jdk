@@ -1372,27 +1372,6 @@ static void float_move(MacroAssembler*masm,
       __ fmr(dst.first()->as_FloatRegister(), src.first()->as_FloatRegister());
   }
 }
-// static void use_non_branch_code(MacroAssembler* masm,Register temp,Register r_return)
-// {
-    
-//     if (VM_Version::has_brw()) {
-//       __ li(R0,1);
-//       __ cmpdi(CCR0,r_return,0);
-//       __ setbcr(r_return,CCR0,Assembler::zero);
-//       __ cmpdi(CCR0,R0,0);
-//       __ setbcr(R0,CCR0,Assembler::zero);
-      
-//       if(UseNewCode)
-//         __ untested("setbcr works");
-      
-//     }
-//     else {
-//       __ neg(temp, r_return);
-//       __ orr(temp, r_return, temp);
-//       __ srwi(r_return, temp, 31);
-      
-//     }
-// }
 
 static void double_move(MacroAssembler*masm,
                         VMRegPair src, VMRegPair dst,
