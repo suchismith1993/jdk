@@ -905,11 +905,8 @@ class MacroAssembler: public Assembler {
   void should_not_reach_here(const char* msg = nullptr) { stop(stop_shouldnotreachhere, msg); }
 
   void zap_from_to(Register low, int before, Register high, int after, Register val, Register addr) PRODUCT_RETURN;
-
-  // // Branch-free implementation to convert !0 to false.
+  // Branch-free implementation to convert !0 to false.
   void normalize_bool(Register dst, Register src, bool use_64bit);
-
-
 };
 
 // class SkipIfEqualZero:
