@@ -73,7 +73,22 @@ void MacroAssembler::ld_largeoffset_unchecked(Register d, int si31, Register a, 
     ld(d, lo, d);
   }
 }
+// Branch-free implementation to convert !0 to false
+void MacroAssembler::normalize_bool(Register dst, Register temp, bool use_64bit) {
+  
+  if (VM_Version::has_brw()) {
+      cmpdi(CCR0, dst, 0);
+      setbcr(dst, CCR0, Assembler::zero);
+    }
+    else {
+      neg(temp, dst);
+      orr(temp, dst, temp);
+      srwi(dst, temp, 31);
+      if(UseNewCode)
+        untested("setbcr works");
+    }
 
+}
 void MacroAssembler::ld_largeoffset(Register d, int si31, Register a, int emit_filler_nop) {
   assert_different_registers(d, a);
   ld_largeoffset_unchecked(d, si31, a, emit_filler_nop);

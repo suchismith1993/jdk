@@ -350,7 +350,7 @@ class Assembler : public AbstractAssembler {
 
     SETBC_OPCODE  = (31u << OPCODE_SHIFT | 384u << 1),
     SETNBC_OPCODE = (31u << OPCODE_SHIFT | 448u << 1),
-
+    SETBCR_OPCODE = (31u << OPCODE_SHIFT | 416u << 1),
     // condition register logic instructions
     CRAND_OPCODE  = (19u << OPCODE_SHIFT | 257u << 1),
     CRNAND_OPCODE = (19u << OPCODE_SHIFT | 225u << 1),
@@ -1780,6 +1780,8 @@ class Assembler : public AbstractAssembler {
   inline void setbc( Register d, ConditionRegister cr, Condition cc);
   inline void setnbc(Register d, int biint);
   inline void setnbc(Register d, ConditionRegister cr, Condition cc);
+  inline void setbcr( Register d, int biint);
+  inline void setbcr( Register d, ConditionRegister cr, Condition cc);
 
   // Special purpose registers
   // Exception Register
