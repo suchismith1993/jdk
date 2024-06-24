@@ -89,7 +89,6 @@ void MacroAssembler::normalize_bool(Register dst, Register temp, bool use_64bit)
       if(UseNewCode)
         untested("setbcr works");
     }
-
 }
 void MacroAssembler::ld_largeoffset(Register d, int si31, Register a, int emit_filler_nop) {
   assert_different_registers(d, a);
