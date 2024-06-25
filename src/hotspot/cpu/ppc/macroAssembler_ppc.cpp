@@ -83,7 +83,10 @@ void MacroAssembler::normalize_bool(Register dst, Register temp, bool use_64bit)
     else {
       neg(temp, dst);
       orr(temp, dst, temp);
-      srwi(dst, temp, 31);
+      if(use_64bit)
+        srdi(dst, temp, 63);
+      else
+        srwi(dst, temp, 31);
       
     }
 }
