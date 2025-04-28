@@ -10407,7 +10407,56 @@ instruct cmovL_bso_reg(iRegLdst dst, flagsRegSrc crx, regD src) %{
   ins_pipe(pipe_class_default);
 %}
 
+instruct cmovL_bso_reg_conLvalue0_Ex(iRegLdst dst, flagsRegSrc crx, regD src) %{
+  // no match-rule, false predicate
+  effect(DEF dst, USE crx, USE src);
+  predicate(false);
 
+  format %{ "CmovL   $dst, $crx, $src \t// postalloc expanded" %}
+  postalloc_expand %{
+    //
+    // replaces
+    //
+    //   region  dst  crx  src
+    //    \       |    |   /
+    //     dst=cmovL_bso_reg_conLvalue0
+    //
+    // with
+    //
+    //   region  dst
+    //    \       /
+    //     dst=loadConL16(0)
+    //      |
+    //      ^  region  dst  crx  src
+    //      |   \       |    |    /
+    //      dst=cmovL_bso_reg
+    //
+
+    // Create new nodes.
+    MachNode *m1 = new loadConL16Node();
+    MachNode *m2 = new cmovL_bso_regNode();
+
+    // inputs for new nodes
+    m1->add_req(n_region);
+    m2->add_req(n_region, n_crx, n_src);
+    m2->add_prec(m1);
+
+    // operands for new nodes
+    m1->_opnds[0] = op_dst;
+    m1->_opnds[1] = new immL16Oper(0);
+    m2->_opnds[0] = op_dst;
+    m2->_opnds[1] = op_crx;
+    m2->_opnds[2] = op_src;
+
+    // registers for new nodes
+    ra_->set_pair(m1->_idx, ra_->get_reg_second(this), ra_->get_reg_first(this)); // dst
+    ra_->set_pair(m2->_idx, ra_->get_reg_second(this), ra_->get_reg_first(this)); // dst
+
+    // Insert new nodes.
+    nodes->push(m1);
+    nodes->push(m2);
+  %}
+%}
 
 // Float to Long conversion, NaN is mapped to 0. Special version for Power8.
 instruct convF2L_reg_mffprd_ExEx(iRegLdst dst, regF src) %{

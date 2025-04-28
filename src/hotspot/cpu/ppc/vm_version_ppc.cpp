@@ -99,8 +99,10 @@ void VM_Version::initialize() {
     FLAG_SET_ERGO(ConditionalMoveLimit, 0);
   }
 
-
-  MaxVectorSize = 16;
+  MaxVectorSize = SuperwordUseVSX ? 16 : 8;
+  if (FLAG_IS_DEFAULT(AlignVector)) {
+    FLAG_SET_ERGO(AlignVector, false);
+  }
 
   if (PowerArchitecturePPC64 >= 9) {
     if (FLAG_IS_DEFAULT(UseCountTrailingZerosInstructionsPPC64)) {
@@ -161,7 +163,7 @@ void VM_Version::initialize() {
   char buf[(num_features+1) * 16]; // Max 16 chars per feature.
   jio_snprintf(buf, sizeof(buf),
                "ppc64%s%s%s",
-               (" sha"     : ""),
+               (" sha"),
                (has_darn()    ? " darn"    : ""),
                (has_brw()     ? " brw"     : "")
                // Make sure number of %s matches num_features!
