@@ -97,4 +97,5 @@ define_pd_global(bool,  TrapBasedRangeChecks,        false); // Not needed
 // Ergonomics related flags
 define_pd_global(bool, NeverActAsServerClassMachine, false);
 
+define_pd_global(size_t, ConstantTableSizeThreshold, 0); //Currently Unused.
 #endif // CPU_ARM_C2_GLOBALS_ARM_HPP
