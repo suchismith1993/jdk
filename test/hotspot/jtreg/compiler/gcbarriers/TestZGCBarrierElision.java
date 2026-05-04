@@ -43,7 +43,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @summary Test that the ZGC barrier elision optimization elides unnecessary
  *          barriers following simple allocation and domination rules.
  * @library /test/lib /
- * @requires vm.gc.Z & (vm.simpleArch == "x64" | vm.simpleArch == "aarch64")
+ * @requires vm.gc.Z & (vm.simpleArch == "x64" | vm.simpleArch == "aarch64" | vm.simpleArch == "ppc64le")
  * @run driver compiler.gcbarriers.TestZGCBarrierElision test-effectiveness
  */
 

@@ -82,4 +82,5 @@ define_pd_global(bool,  TrapBasedRangeChecks,        false); // Not needed on z/
 // Ergonomics related flags
 define_pd_global(bool, NeverActAsServerClassMachine, false);
 
+define_pd_global(size_t, ConstantTableSizeThreshold, 0); //Currently unused.
 #endif // CPU_S390_C2_GLOBALS_S390_HPP

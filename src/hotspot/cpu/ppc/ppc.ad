@@ -5946,6 +5946,7 @@ instruct loadConP_Ex(iRegPdst dst, immP src) %{
 instruct loadConF(regF dst, immF src, iRegLdst toc, iRegLdst tmp) %{
   effect(DEF dst, USE src, USE toc, USE tmp);
   ins_cost(MEMORY_REF_COST);
+
   ins_num_consts(1);
   ins_toc_short_size(4);
 
@@ -5988,7 +5989,9 @@ instruct loadConF_Ex(regF dst, immF src, iRegLdst tmp) %{
 instruct loadConD(regD dst, immD src, iRegLdst toc, iRegLdst tmp) %{
   effect(DEF dst, USE src, USE toc, USE tmp);
   ins_cost(MEMORY_REF_COST);
+
   ins_num_consts(1);
+
   ins_toc_short_size(4);
   format %{ "LFD     $dst, offset, $toc \t// load double $src from TOC" %}
   size(8);
@@ -6029,7 +6032,7 @@ instruct loadConD_Ex(regD dst, immD src, iRegLdst tmp) %{
   match(Set dst src);
   effect(TEMP tmp);
   ins_cost(MEMORY_REF_COST);
-
+  // See loadConP.
   ins_cannot_rematerialize(true);
 
   format %{ "ConD    $dst, offset, $constanttablebase \t// load $src from table, postalloc expanded" %}
@@ -13828,6 +13831,7 @@ instruct CallDynamicJavaDirectSched(method meth) %{
   match(CallDynamicJava); // To get all the data fields we need ...
   effect(USE meth);
   predicate(false);       // ... but never match.
+
   ins_field_load_ic_node(loadConLNode*);
   ins_num_consts(1 /* 1 patchable constant: call destination */);
 

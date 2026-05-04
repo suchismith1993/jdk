@@ -294,6 +294,7 @@
                                                                             \
   develop_pd(bool, UseCISCSpill,                                            \
           "Use ADLC supplied cisc instructions during allocation")          \
+                                                                            \
   develop_pd(intx, ConstantTableSizeThreshold,                              \
           "Maximum combined size (code + constant table) in bytes for "     \
           "which short constant-table addressing is used. 0 disables "      \
@@ -898,6 +899,7 @@
                                                                             \
   develop(bool, StressLoopPeeling, false,                                   \
           "Randomize loop peeling decision")                                \
+
 // end of C2_FLAGS
 
 DECLARE_FLAGS(C2_FLAGS)
